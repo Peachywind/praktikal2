@@ -1,26 +1,24 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace praktikal2
+public static class MyConverter
 {
-
-    internal class MyConverter
+    // Метод сериализации объекта в строку JSON и сохранения в файл
+    public static void MySerealize<T>(T obj, string fileName = "C:\\Users\\Vladi\\OneDrive\\Рабочий стол\\pr2date\\myJson")
     {
-        public static void MySerealize(List<notes> notes)
+        var jsonString = JsonConvert.SerializeObject(obj);
+        File.WriteAllText(fileName, jsonString);
+    }
+
+    // Метод десериализации объекта из строки JSON из файла
+    public static T MyDeserialize<T>(string fileName = "C:\\Users\\Vladi\\OneDrive\\Рабочий стол\\pr2date\\myJson") // я 
+    {
+        if (!File.Exists(fileName))
         {
-            string json = JsonConvert.SerializeObject( notes);
-            File.WriteAllText("C:\\Рабочий Стол\\MYjsom",json);
+            return default(T);
         }
-        public static List<notes> MyDeSerealize()
-        {
-            string json = File.ReadAllText("C:\\Рабочий Стол\\MYjsom");
-            List<notes> notes = JsonConvert.DeserializeObject<List<notes>>(json);
-            return notes;
-        }
+
+        var jsonString = File.ReadAllText(fileName);
+        return JsonConvert.DeserializeObject<T>(jsonString);
     }
 }
